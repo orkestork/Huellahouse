@@ -95,8 +95,11 @@ new IntersectionObserver(([entry]) => {
   const video = arch?.querySelector('.house-video');
   const box = arch?.querySelector('.house-cover');
   if (!video || !box) return;
-  let last = '';
+  let last = '', onScreen = true;
+  // Reading layout every frame is only worth it while the hero is visible.
+  new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; }).observe(arch);
   (function sync() {
+    if (!onScreen) return requestAnimationFrame(sync);
     const a = arch.getBoundingClientRect(), b = box.getBoundingClientRect();
     const next = `${b.left - a.left},${b.top - a.top},${b.width},${b.height}`;
     if (next !== last) {
@@ -439,7 +442,10 @@ new IntersectionObserver(([entry]) => {
   }
 
   // Smooth wheel scrolling: each wheel step eases to the new target over 1000ms (cubic).
-  let target = scrollY, from = scrollY, startTime = 0, raf = 0;
+  // Only for mouse wheels: trackpads already scroll smoothly with their own inertia, and easing on top of it
+  // made laptops keep scrolling ~1s after the fingers stopped (and blocked horizontal swipe gestures).
+  let target = scrollY, from = scrollY, startTime = 0, raf = 0, trackpad = false;
+  const isTrackpad = event => event.deltaX !== 0 || (event.wheelDeltaY ? event.wheelDeltaY === -3 * event.deltaY : event.deltaMode === 0 && Math.abs(event.deltaY) < 50);
   const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
   function step(now) {
     const t = Math.min(1, (now - startTime) / 1000);
@@ -448,7 +454,8 @@ new IntersectionObserver(([entry]) => {
   }
   addEventListener('wheel', event => {
     if (event.ctrlKey || root.classList.contains('is-loading')) return;
-    if (event.target.closest('textarea, select, dialog')) return;
+    if (event.target.closest?.('textarea, select, dialog')) return;
+    if (trackpad || (trackpad = isTrackpad(event))) { stopSmooth(); return; }
     event.preventDefault();
     const delta = event.deltaMode === 1 ? event.deltaY * 40 : event.deltaMode === 2 ? event.deltaY * innerHeight : event.deltaY;
     if (!raf) target = scrollY;

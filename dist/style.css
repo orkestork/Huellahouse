@@ -154,7 +154,7 @@ html.gallery-open{overflow:hidden}
 .dish__arrow--prev .cta-arrow{transform:scaleX(-1)}
 .dish__arrow:hover{color:var(--accent)}
 @media(max-width:1100px){.dish{--plate:min(40vw,380px);grid-template-columns:var(--plate) minmax(0,1fr);grid-template-areas:"stage info" "thumbs thumbs" "card card"}.dish__card{min-height:0}}
-@media(max-width:640px){.recipes{padding:50px 0}.recipes__head{margin-bottom:24px}.recipes__head h2{font-size:43px}.dish{--plate:66vw;grid-template-columns:1fr;grid-template-areas:"stage" "info" "thumbs" "card";justify-items:center;text-align:center;gap:28px;padding:0 7%}.dish__actions{justify-content:center}.dish__thumbs{justify-content:center;gap:4px}.dish__thumb{width:84px}.dish__card{width:100%}}
+@media(max-width:640px){.recipes{padding:50px 0}.recipes__head{margin-bottom:24px}.recipes__head h2{font-size:43px}.dish{--plate:66vw;grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "info" "thumbs" "card";justify-items:center;text-align:center;gap:28px;padding:0 7%}.dish__actions{justify-content:center}.dish__thumbs{width:100%;justify-content:center;gap:4px}.dish__thumb{flex:1 1 0;min-width:0;width:auto;max-width:84px;padding:10px 4px}.dish__thumb img{width:52px;height:52px}.dish__arrow{flex:none;padding:6px 2px}.dish__arrow .cta-arrow{width:24px}.dish__card{width:100%}}
 .big-link{display:flex;justify-content:center;padding:110px 0;border-bottom:1px solid var(--line)}
 .big-link__link{position:relative;display:block}
 .big-link__picture{position:relative;margin:0;width:min(40.6vw,560px);aspect-ratio:1;border-radius:50%;overflow:hidden;-webkit-mask-image:radial-gradient(#fff,#000);mask-image:radial-gradient(#fff,#000)}
